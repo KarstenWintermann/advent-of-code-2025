@@ -1,6 +1,8 @@
 const readline = require('readline');
 const fs = require('fs');
 
+const start = new Date();
+
 const rl = readline.createInterface({
   input: fs.createReadStream('03/input.txt')
 });
@@ -22,10 +24,12 @@ rl.on('line', (line) => {
         }
         joltage = joltage * 10 + highest;
     }
-    console.log(joltage);
+    //console.log(joltage);
     sum += joltage;
 });
 
 rl.on('close', () => {
+    const end = new Date();
+    console.log(`Execution time: ${end - start} ms`);
     console.log(sum);
 });
