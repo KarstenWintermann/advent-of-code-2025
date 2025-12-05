@@ -1,6 +1,8 @@
 const readline = require('readline');
 const fs = require('fs');
 
+const startTime = new Date();
+
 const rl = readline.createInterface({
   input: fs.createReadStream('05/input.txt')
 });
@@ -13,20 +15,15 @@ let ranges = []
 let ingredients = []
 
 rl.on('line', (line) => {
-    // empty line? Switch to ingredients
-    if (upper && line.length === 0) {
-        upper = false;
-        return;
-    }
-
-    // upper section: ranges
     if (upper) {
-        ranges.push(line.split("-").map(str => parseInt(str, 10)))
-        return;
-    }
-
-    // lower section: ingredients
-    ingredients.push(parseInt(line, 10))
+        // empty line? Switch to ingredients
+        if (line.length === 0) 
+            upper = false;
+        else     
+            ranges.push(line.split("-").map(str => parseInt(str, 10)))
+    } else
+        // lower section: ingredients
+        ingredients.push(parseInt(line, 10))
 });
 
 rl.on('close', () => {
@@ -48,12 +45,9 @@ rl.on('close', () => {
             const [start2, end2] = nonOverlapping[r2]
             if (start2 <= end && start <= end2) {
                 // Overlap? Merge intervals
-                const newStart = Math.min(start, start2)
-                const newEnd = Math.max(end, end2)
-                nonOverlapping.splice(r2, 1)
-                r2--
-                start = newStart
-                end = newEnd
+                start = Math.min(start, start2)
+                end = Math.max(end, end2)
+                nonOverlapping.splice(r2--, 1)
             }
         }
         nonOverlapping.push([start, end])
@@ -63,6 +57,9 @@ rl.on('close', () => {
         const [start, end] = nonOverlapping[r]
         allfresh += (end - start + 1)
     }
+
+    const endTime = new Date();
+    console.log(`Execution time: ${endTime - startTime} ms`);
 
     console.log(`Fresh: ${fresh}`);
     console.log(`All Fresh: ${allfresh}`);
