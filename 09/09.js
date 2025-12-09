@@ -6,8 +6,6 @@ const rl = readline.createInterface({
 });
 
 let redtiles = []
-let max_x = 0;
-let max_y = 0;
 let grid = [];
 let xvalues = []
 let yvalues = []
@@ -29,21 +27,6 @@ function drawline(x1, y1, x2, y2) {
             grid[x][y1] = 1;
         }  
     }
-}
-
-function floodFillRecursive(grid, x, y, targetColor, startColor) {
-    if (x < 0 || x >= grid.length || y < 0
-        || y >= grid[0].length ||
-        grid[x][y] !== startColor) {
-        return;
-    }
-
-    grid[x][y] = targetColor;
-
-    floodFillRecursive(grid, x + 1, y, targetColor, startColor);
-    floodFillRecursive(grid, x - 1, y, targetColor, startColor);
-    floodFillRecursive(grid, x, y + 1, targetColor, startColor);
-    floodFillRecursive(grid, x, y - 1, targetColor, startColor);
 }
 
 function stackfill() {
@@ -88,6 +71,9 @@ function containsOutsideField(x1, y1, x2, y2) {
 }
 
 rl.on('close', () => {
+
+    let start = new Date();
+
     let biggestarea = 0;
     for (redtile of redtiles) {
         for (otherredtile of redtiles) {
@@ -97,7 +83,10 @@ rl.on('close', () => {
             }
         }
     }
+    console.log(`Execution time part 1: ${new Date() - start} ms`);    
     console.log(`biggest area: ${biggestarea}`);
+
+    start = new Date();
 
     xvalues.sort((a, b) => a - b);
     yvalues.sort((a, b) => a - b);
@@ -133,5 +122,6 @@ rl.on('close', () => {
         }
     }
 
+    console.log(`Execution time part 2: ${new Date() - start} ms`);    
     console.log(`biggest area inside: ${biggestarea}`);
 });
