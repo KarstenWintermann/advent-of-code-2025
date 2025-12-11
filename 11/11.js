@@ -24,12 +24,9 @@ function findPaths(start) {
     return num;
 }
 
-const visited = new Set();
-
 const cache = new Map();
 
 function findPaths2(start, end) {
-//    console.log(`start: ${start}, end: ${end}, visited: ${visited}`)
 
     if (start === end) {
         return 1;
@@ -67,9 +64,6 @@ rl.on('close', () => {
     let dacfft = findPaths2("dac", "fft")
     let fftout = findPaths2("fft", "out")
 
-    console.log(`part2: ${svrfft * fftdac * dacout + svrdac * dacfft * fftout}`)
-
-    
+    console.log(`part2: ${svrfft * fftdac * dacout + svrdac * dacfft * fftout}`)   
     console.log(`Execution time part 2: ${new Date() - start} ms`);    
-
 });
